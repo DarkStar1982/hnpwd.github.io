@@ -1,42 +1,59 @@
-HN Personal Blogs
-=================
+HN Personal Websites Directory
+==============================
 
-Hello!  This project provides a directory personal blogs from the
-Hacker News (HN) community along with an OPML file.  Please visit the
-following link to view these resources:
+HN Personal Websites Directory (HNPWD) is a community-maintained
+directory of personal websites by members of the Hacker News (HN)
+community, along with an OPML file containing their RSS feeds.  Please
+visit the following link to view these resources:
 
-* [hnblogs.github.io][site]
-* [blogs.opml][opml]
+* [hnpwd.github.io][site]
+* [pwd.opml][opml]
 
-[site]: https://hnblogs.github.io/
-[opml]: https://hnblogs.github.io/blogs.opml
-[lisp]: blogs.lisp
+[site]: https://hnpwd.github.io/
+[opml]: https://hnpwd.github.io/pwd.opml
+[lisp]: pwd.lisp
 
 
-Add Your Blog
--------------
+Add Your Website
+----------------
 
-To add your blog to the directory, add the details of your blog to
-[blogs.lisp][lisp] and send a pull request to this project.
+To add your website to the directory, add the details of your website
+to [pwd.lisp][lisp] and send a pull request to this project.
 
-If you scroll down to the bottom of the [blogs.lisp][lisp] file,
-you'll find an example entry that you can copy and paste to get
-started.  While creating your PR, please follow these guidelines:
+If you scroll down to the bottom of the [pwd.lisp][lisp] file, you'll
+find an example entry that you can copy and paste to get started.
+While creating your PR, please follow these guidelines:
 
- 1. Ensure that all blog entries remain sorted by name.
+ 1. Ensure that all website entries remain sorted by name.
  2. Ensure that the bio text does not exceed 80 characters in length.
  3. If you do not want to enter certain links, just delete that entire
     property.  For example, if you do not want to provide an 'about'
     link, just delete the entire `:about` line from your entry.
 
-That's it!  Once you create the PR, we'll take care of the rest.
+Alternatively, [create an issue][ISSUES] and while creating the issue,
+provide the details of your website in the following format:
+
+````lisp
+```
+ (:name "Author Name (first name and last name)"
+  :site "https://example.com/"
+  :feed "https://example.com/feed.xml"
+  :about "https://example.com/about/"
+  :now "https://example.com/now/"
+  :hnuid "example (user ID on HN)"
+  :bio "A brief third-person description of yourself, not exceeding 80 characters.")
+```
+````
+
+That's it!  Once you create the PR or the issue, we'll take care of
+the rest.
 
 
 Maintainers Needed
 ------------------
 
 This project needs additional contributors to help review and merge
-pull requests so that the blog list maintained in this project can
+pull requests so that the website list maintained in this project can
 grow in a timely manner.
 
 If you are an active member of the Hacker News community with a solid
@@ -56,13 +73,12 @@ FAQ
     over 1200 RSS feeds, whereas our project only has a small number
     of entries so far.  We hope that, with contributions from
     community members, our list will grow over time.  An important
-    goal of this project is to maintain the list of bloggers together
+    goal of this project is to maintain the list of websites together
     as a community.
 
     This project also goes beyond providing an OPML file.  In addition
-    to the [OPML][opml], it offers a [website][site] that lists
-    bloggers individually, with links to their websites and a short
-    bio for each.
+    to the [OPML][opml], it offers a [website][site] that lists the
+    websites individually along with a short bio of each author.
 
  2. Why did you not start by importing
     [outcoldman/hackernews-personal-blogs][outcoldman]?
@@ -97,9 +113,9 @@ Contact
 
 To report bugs or ask questions, [create issues][ISSUES].
 
-Alternatively, you can also join our IRC channel [#hnblogs][IRC] on
+Alternatively, you can also join our IRC channel [#hnpwd][IRC] on
 Libera Chat to ask questions or just generally hang out with the
 community.
 
-[ISSUES]: https://github.com/hnblogs/hnblogs.github.io/issues
-[IRC]: https://web.libera.chat/#hnblogs
+[ISSUES]: https://github.com/hnpwd/hnpwd.github.io/issues
+[IRC]: https://web.libera.chat/#hnpwd

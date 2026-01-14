@@ -7,12 +7,12 @@
   "Read Lisp file."
   (with-open-file (f filename) (read f)))
 
-(defun read-blogs ()
-  "Read blog entries from blogs.lisp."
+(defun read-entries ()
+  "Read website entries from the data file."
   (remove-if
    (lambda (item)
-     (string= (getf item :blog) "https://example.com/"))
-   (read-list "blogs.lisp")))
+     (string= (getf item :site) "https://example.com/"))
+   (read-list "pwd.lisp")))
 
 (defun validate-name-order (items)
   "Check that entries are arranged in the order of names."
@@ -34,15 +34,15 @@
                (getf item :name) (length bio) max-len)))))
 
 (defun make-opml-outline (item)
-  "Create an outline element for the specified blog entry."
+  "Create an outline element for the specified website entry."
   (with-output-to-string (s)
-    (when (and (getf item :name) (getf item :feed) (getf item :blog))
+    (when (and (getf item :name) (getf item :feed) (getf item :site))
       (format s
               "      <outline type=\"rss\" text=\"~a\" title=\"~a\" xmlUrl=\"~a\" htmlUrl=\"~a\"/>~%"
               (getf item :name)
               (getf item :name)
               (getf item :feed)
-              (getf item :blog)))))
+              (getf item :site)))))
 
 (defun make-opml (items)
   "Create OPML file for all feeds."
@@ -50,50 +50,56 @@
     (format s "<?xml version=\"1.0\" encoding=\"UTF-8\"?>~%")
     (format s "<opml version=\"2.0\">~%")
     (format s "  <head>~%")
-    (format s "    <title>HN Blogs</title>~%")
+    (format s "    <title>HN Personal Websites</title>~%")
     (format s "  </head>~%")
     (format s "  <body>~%")
-    (format s "    <outline text=\"HN Blogs\" title=\"HN Blogs\">~%")
+    (format s "    <outline text=\"HN Personal Websites\" title=\"HN Personal Websites\">~%")
     (loop for item in items
           do (format s "~a" (make-opml-outline item)))
     (format s "    </outline>~%")
     (format s "  </body>~%")
     (format s "</opml>~%")))
 
-(defun make-html-link (href text)
+(defun make-site-link (href text)
   "Create an HTML link."
   (with-output-to-string (s)
     (when href
       (format s "          <a href=\"~a\">~a</a>~%" href text))))
 
-(defun make-html-bio (bio)
+(defun make-user-link (user text)
+  "Create an HTML link."
+  (with-output-to-string (s)
+    (when user
+      (format s "          <a href=\"https://news.ycombinator.com/user?id=~a\">~a</a>~%" user text))))
+
+(defun make-site-bio (bio)
   "Create HTML snippet to display bio."
   (with-output-to-string (s)
     (when bio
       (format s "        <p>~a</p>~%" bio))))
 
 (defun make-html-card (item)
-  "Create an HTML section for the specified blog entry."
+  "Create an HTML section for the specified website entry."
   (with-output-to-string (s)
     (format s "      <section>~%")
     (format s "        <h2>~a</h2>~%" (getf item :name))
     (format s "        <nav>~%")
-    (format s (make-html-link (getf item :blog) "Website"))
-    (format s (make-html-link (getf item :about) "About"))
-    (format s (make-html-link (getf item :now) "Now"))
-    (format s (make-html-link (getf item :feed) "Feed"))
-    (format s (make-html-link (getf item :hnuid) "HN"))
+    (format s (make-site-link (getf item :site) "Website"))
+    (format s (make-site-link (getf item :about) "About"))
+    (format s (make-site-link (getf item :now) "Now"))
+    (format s (make-site-link (getf item :feed) "Feed"))
+    (format s (make-user-link (getf item :hnuid) "HN"))
     (format s "        </nav>~%")
-    (format s (make-html-bio (getf item :bio)))
+    (format s (make-site-bio (getf item :bio)))
     (format s "      </section>~%")))
 
 (defun make-html (items)
-  "Create HTML page with all blog entries."
+  "Create HTML page with all website entries."
   (with-output-to-string (s)
     (format s "<!DOCTYPE html>~%")
     (format s "<html lang=\"en\">~%")
     (format s "  <head>~%")
-    (format s "    <title>HN Blogs</title>~%")
+    (format s "    <title>HN Personal Websites Directory</title>~%")
     (format s "    <meta charset=\"UTF-8\">~%")
     (format s "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">~%")
     (format s "    <link rel=\"stylesheet\" href=\"style.css\">~%")
@@ -101,21 +107,21 @@
     (format s "    <script src=\"script.js\"></script>~%")
     (format s "  </head>~%")
     (format s "  <body>~%")
-    (format s "    <h1>HN Blogs</h1>~%")
+    (format s "    <h1>HN Personal Websites Directory</h1>~%")
     (format s "    <main>~%")
     (loop for item in items
           do (format s "~a" (make-html-card item)))
     (format s "    </main>~%")
     (format s "    <footer>~%")
     (format s "      <nav>~%")
-    (format s "        <a href=\"https://github.com/hnblogs/hnblogs.github.io#README\">README</a>~%")
-    (format s "        <a href=\"blogs.opml\">OPML</a>~%")
-    (format s "        <a href=\"https://web.libera.chat/#hnblogs\">IRC</a>~%")
+    (format s "        <a href=\"https://github.com/hnpwd/hnpwd.github.io#README\">README</a>~%")
+    (format s "        <a href=\"pwd.opml\">OPML</a>~%")
+    (format s "        <a href=\"https://web.libera.chat/#hnpwd\">IRC</a>~%")
     (format s "      </nav>~%")
     (format s "      <p>~%")
     (format s "        This website is not affiliated with Hacker News.~%")
-    (format s "        It is a community-maintained directory of blogs~%")
-    (format s "        by people active in the HN community.~%")
+    (format s "        It is a community-maintained directory of~%")
+    (format s "        personal websites by people active in the HN community.~%")
     (format s "      </p>~%")
     (format s "    </footer>~%")
     (format s "  </body>~%")
@@ -123,10 +129,10 @@
 
 (defun main ()
   "Create artefacts."
-  (let ((blogs (read-blogs)))
-    (validate-name-order blogs)
-    (validate-bio-length blogs)
-    (write-file "blogs.opml" (make-opml blogs))
-    (write-file "index.html" (make-html blogs))))
+  (let ((entries (read-entries)))
+    (validate-name-order entries)
+    (validate-bio-length entries)
+    (write-file "pwd.opml" (make-opml entries))
+    (write-file "index.html" (make-html entries))))
 
 (main)
