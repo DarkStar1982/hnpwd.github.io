@@ -40,8 +40,14 @@ section nav a:last-child {
   margin-right: 0;
 }
 footer {
-  margin: 1em auto;
   text-align: center;
+}
+footer nav {
+  margin: 1.5em 0 1em 0;
+}
+footer p {
+  max-width: 32em;
+  margin: 0 auto 1em auto;
 }
 footer a {
   margin-right: 1.25em;
