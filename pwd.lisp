@@ -168,13 +168,10 @@
   :hnuid "xena"
   :bio "Creator of Anubis.  Technical educator, conference speaker and Twitch streamer.")
 
- (:name ""
-  :site ""
-  :blog ""
-  :feed ""
-  :about ""
-  :now ""
-  :hnuid ""
-  :bio "")
+ (:name "Matt Crampton"
+  :site "https://www.mattcrampton.com"
+  :feed "https://www.mattcrampton.com/feed.xml"
+  :hnuid "revicon"
+  :bio "A blog about software development, startups, camping and beards")
 
  (:end))
